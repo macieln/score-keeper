@@ -11,7 +11,7 @@ struct ContentView: View {
     @State private var players: [Player] = [
         Player(name: "Stephanie", score: 0),
         Player(name: "Nahum", score: 0),
-        Player(name: "Dertanian", score: 0)
+        Player(name: "Dertanian", score: 0),
     ]
     
     var body: some View {
@@ -21,32 +21,37 @@ struct ContentView: View {
                 .bold()
                 .padding(.bottom)
             
-            Grid {
-                GridRow {
-                    Text("Player")
-                        .gridColumnAlignment(.leading)
-                    Text("Score")
-                }
-                .font(.headline)
+            HStack {
+                Text("Player")
+                    .padding(.leading)
                 
-                ForEach($players) { $player in
-                    GridRow {
-                        TextField("Name", text: $player.name)
-                        Text("\(player.score)")
-                        Stepper("\(player.score)", value: $player.score)
-                            .labelsHidden()
-                    }
-                }
+                Spacer()
+                
+                Text("Score")
+                    .padding(.trailing)
             }
-            .padding(.vertical)
+            .font(.headline)
+            .padding(.bottom)
+            
+            List($players) { $player in
+                HStack {
+                    TextField("Name", text: $player.name)
+                        .listRowSeparator(.hidden)
+                    Text("\(player.score)")
+                    Stepper("\(player.score)", value: $player.score)
+                        .labelsHidden()
+                        .listRowSeparator(.hidden)
+                }
+                .listRowSeparator(.hidden)
+                .padding(.bottom)
+            }
+            .listStyle(.plain)
             
             Button("Add Player", systemImage: "plus") {
                 players.append(
                     Player(name: "", score: 0)
                 )
             }
-            
-            Spacer()
         }
         .padding()
     }
